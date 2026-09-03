@@ -1,1 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#111827">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+  <title>MÖOYA</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .app {
+      max-width: 480px;
+      min-height: 100vh;
+      margin: auto;
+      background: #f9fafb;
+      padding-bottom: 90px;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 28px 22px 35px;
+      border-radius: 0 0 28px 28px;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .hello {
+      margin-top: 24px;
+      font-size: 14px;
+      opacity: .75;
+    }
+
+    .name {
+      margin-top: 5px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .balance-card {
+      margin: -20px 18px 0;
+      background: white;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 8px 25px rgba(0,0,0,.08);
+      position: relative;
+    }
+
+    .balance-label {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .balance {
+      margin-top: 7px;
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 20px 18px;
+    }
+
+    .summary-card {
+      background: white;
+      padding: 17px;
+      border-radius: 18px;
+      box-shadow: 0 5px 18px rgba(0,0,0,.05);
+    }
+
+    .summary-title {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .summary-value {
+      margin-top: 7px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .income {
+      color: #059669;
+    }
+
+    .expense {
+      color: #dc2626;
+    }
+
+    section {
+      padding: 0 18px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 5px 0 14px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .empty {
+      background: white;
+      padding: 28px 18px;
+      border-radius: 18px;
+      text-align: center;
+      color: #9ca3af;
+      box-shadow: 0 5px 18px rgba(0,0,0,.04);
+    }
+
+    .transaction {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 17px;
+    }
+
+    .transaction-left {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+    }
+
+    .transaction-name {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .transaction-date {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 3px;
+    }
+
+    .transaction-amount {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(480px, 100%);
+      height: 72px;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .nav-item {
+      border: none;
+      background: none;
+      font-size: 11px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 3px;
+    }
+
+    .add-button {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      border: none;
+      background: #111827;
+      color: white;
+      font-size: 28px;
+      margin-top: -25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.2);
+    }
+
+    @media (min-width: 481px) {
+      body {
+        background: #e5e7eb;
+      }
+
+      .app {
+        box-shadow: 0 0 30px rgba(0,0,0,.08);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header>
+    <div class="brand">MÖOYA</div>
+
+    <div class="hello">Selamat datang</div>
+    <div class="name">MOHAMMAD DAFID F.</div>
+  </header>
+
+  <div class="balance-card">
+    <div class="balance-label">Total Saldo</div>
+    <div class="balance" id="balance">Rp0</div>
+  </div>
+
+  <div class="summary">
+
+    <div class="summary-card">
+      <div class="summary-title">Pemasukan</div>
+      <div class="summary-value income" id="income">
+        Rp0
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-title">Pengeluaran</div>
+      <div class="summary-value expense" id="expense">
+        Rp0
+      </div>
+    </div>
+
+  </div>
+
+  <section>
+
+    <div class="section-title">
+      <span>Transaksi Terbaru</span>
+    </div>
+
+    <div id="transactions">
+      <div class="empty">
+        Belum ada transaksi
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<nav class="bottom-nav">
+
+  <button class="nav-item">
+    <span class="nav-icon">⌂</span>
+    Beranda
+  </button>
+
+  <button class="nav-item">
+    <span class="nav-icon">📊</span>
+    Statistik
+  </button>
+
+  <button class="add-button" onclick="addTransaction()">
+    +
+  </button>
+
+  <button class="nav-item">
+    <span class="nav-icon">💳</span>
+    Dompet
+  </button>
+
+  <button class="nav-item">
+    <span class="nav-icon">⚙</span>
+    Pengaturan
+  </button>
+
+</nav>
+
+<script>
+
+  let transactions =
+    JSON.parse(localStorage.getItem("mooya_transactions")) || [];
+
+  function formatRupiah(number) {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0
+    }).format(number);
+  }
+
+  function updateDashboard() {
+
+    let income = 0;
+    let expense = 0;
+
+    transactions.forEach(t => {
+
+      if (t.type === "income") {
+        income += t.amount;
+      } else {
+        expense += t.amount;
+      }
+
+    });
+
+    const balance = income - expense;
+
+    document.getElementById("income").textContent =
+      formatRupiah(income);
+
+    document.getElementById("expense").textContent =
+      formatRupiah(expense);
+
+    document.getElementById("balance").textContent =
+      formatRupiah(balance);
+
+    renderTransactions();
+  }
+
+  function renderTransactions() {
+
+    const container =
+      document.getElementById("transactions");
+
+    if (transactions.length === 0) {
+
+      container.innerHTML =
+        '<div class="empty">Belum ada transaksi</div>';
+
+      return;
+    }
+
+    container.innerHTML = "";
+
+    transactions
+      .slice()
+      .reverse()
+      .forEach(t => {
+
+        const div = document.createElement("div");
+
+        div.className = "transaction";
+
+        const sign =
+          t.type === "income" ? "+" : "-";
+
+        div.innerHTML = `
+          <div class="transaction-left">
+            <div class="icon">
+              ${t.type === "income" ? "↓" : "↑"}
+            </div>
+
+            <div>
+              <div class="transaction-name">
+                ${t.name}
+              </div>
+
+              <div class="transaction-date">
+                ${t.date}
+              </div>
+            </div>
+          </div>
+
+          <div class="transaction-amount ${t.type}">
+            ${sign}${formatRupiah(t.amount)}
+          </div>
+        `;
+
+        container.appendChild(div);
+
+      });
+
+  }
+
+  function addTransaction() {
+
+    const name =
+      prompt("Nama transaksi:");
+
+    if (!name) return;
+
+    const amount =
+      Number(prompt("Jumlah (contoh: 10000):"));
+
+    if (!amount || amount <= 0) return;
+
+    const type =
+      confirm("OK = Pemasukan\nCancel = Pengeluaran")
+        ? "income"
+        : "expense";
+
+    transactions.push({
+
+      name: name,
+
+      amount: amount,
+
+      type: type,
+
+      date: new Date().toLocaleDateString(
+        "id-ID",
+        {
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        }
+      )
+
+    });
+
+    localStorage.setItem(
+      "mooya_transactions",
+      JSON.stringify(transactions)
+    );
+
+    updateDashboard();
+
+  }
+
+  updateDashboard();
+
+</script>
+
+</body>
+</html>
